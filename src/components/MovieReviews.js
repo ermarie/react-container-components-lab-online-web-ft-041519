@@ -1,8 +1,10 @@
 // Code MovieReviews Here
-import React, { Component } from 'react'
+import React from 'react'
 
 const MovieReviews = (props) => {
-    return <div className='review-list'>{props.reviews}</div>
+    return <div className='review-list'>
+        <div className='reviews'>{props.reviews.headline}</div>
+    </div>
 }
 
 export default MovieReviews

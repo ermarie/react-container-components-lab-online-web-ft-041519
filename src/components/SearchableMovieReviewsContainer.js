@@ -3,27 +3,39 @@ import 'isomorphic-fetch';
 import MovieReviews from './MovieReviews'
 
 const NYT_API_KEY = 'WZvxiC7s8xWD2ZVH7QxnW2gdVlAs7KBA';
-const URL = 'https://api.nytimes.com/svc/movies/v2/reviews/all.json?'
-            + `api-key=${NYT_API_KEY}`;
 
 // Code SearchableMovieReviewsContainer Here
 class SearchableMovieReviewsContainer extends Component {
+    
 
     state = {
-        reviews: [],
-        searchTerm: ''
+        searchTerm: '',
+        reviews : []
+    }
+
+    handleSubmit = (searchTerm) => {
+        this.fetchReviews(searchTerm)
+    }
+
+    handleChange = (e) => {
+        this.setState({searchTerm: e.target.searchTerm})
     }
 
     render() {
         return (
             <div className='searchable-movie-reviews'>
+                <form onSubmit={this.handleSubmit(this.state.searchTerm)}>
+                    <input type='text' value={this.state.searchTerm} onChange={this.handleChange} />
+                    <input type='submit' value='Submit' />
+                </form>
                 <MovieReviews reviews={this.state.reviews} />
             </div>
         )
     }
 
-    componentDidMount() {
-        fetch(URL)
+
+    fetchReviews(search) {
+        fetch(`https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${this.state.searchTerm}?api-key=${NYT_API_KEY}`)
           .then(response => response.json())
           .then(data => {
             // console.log(data.results[0])
